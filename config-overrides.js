@@ -1,9 +1,7 @@
-const webpack = require('webpack');
-
 module.exports = function override(config, env) {
   config.resolve.fallback = {
     ...config.resolve.fallback,
-    querystring: require.resolve('querystring-es3')
+    querystring: 'querystring-es3' // Use the module name directly
   };
   return config;
 };
