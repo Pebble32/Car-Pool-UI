@@ -11,7 +11,7 @@ const Home = () => {
 
   useEffect(() => {
     // Fetch total number of users
-    fetch('http://localhost:8088/api/v1/users/all/paginated?page=0&size=1')
+    fetch('process.env.REACT_APP_BACKEND_URL/users/all/paginated?page=0&size=1')
       .then((response) => response.json())
       .then((data) => {
         setUserCount(data.totalElements);
@@ -21,7 +21,7 @@ const Home = () => {
       });
 
     // Fetch total number of providers
-    fetch('http://localhost:8088/api/v1/offers/all/providers')
+    fetch('process.env.REACT_APP_BACKEND_URL/offers/all/providers')
       .then((response) => response.json())
       .then((data) => {
         setProviderCount(data.length);
@@ -31,7 +31,7 @@ const Home = () => {
       });
 
     // Fetch total number of active rides
-    fetch('http://localhost:8088/api/v1/offers/filter?page=0&size=1&status=AVAILABLE')
+    fetch('process.env.REACT_APP_BACKEND_URL/offers/filter?page=0&size=1&status=AVAILABLE')
       .then((response) => response.json())
       .then((data) => {
         setActiveRideCount(data.totalElements);

@@ -22,7 +22,7 @@ const ViewUsersHistory = () => {
   const [actionLoading, setActionLoading] = useState(false); // To handle loading state for delete actions
 
   const apiClient = new ApiClient();
-  apiClient.basePath = 'http://localhost:8088/api/v1'; // Ensure this matches your Swagger server URL
+  apiClient.basePath = 'process.env.REACT_APP_BACKEND_URL'; // Ensure this matches your Swagger server URL
 
   const navigate = useNavigate();
 

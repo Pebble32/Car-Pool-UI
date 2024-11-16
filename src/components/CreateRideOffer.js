@@ -8,7 +8,7 @@ import RideOfferRequest from '../generated-api/src/model/RideOfferRequest';
 const CreateRideOffer = () => {
   const navigate = useNavigate();
   const apiClient = new ApiClient();
-  apiClient.basePath = 'http://localhost:8088/api/v1';
+  apiClient.basePath = 'process.env.REACT_APP_BACKEND_URL';
   const rideOfferApi = new RideOfferApi(apiClient);
 
   const [newOffer, setNewOffer] = useState({

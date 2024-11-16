@@ -117,7 +117,7 @@ api.authenticate(authenticationRequest, callback);
 
 ## Documentation for API Endpoints
 
-All URIs are relative to *http://localhost:8088/api/v1*
+All URIs are relative to *process.env.REACT_APP_BACKEND_URL*
 
 Class | Method | HTTP request | Description
 ------------ | ------------- | ------------- | -------------

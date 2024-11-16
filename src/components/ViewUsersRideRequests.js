@@ -13,7 +13,7 @@ const ViewUsersRideRequests = () => {
   const [statusLoading, setStatusLoading] = useState(false); // To handle loading state for status changes
 
   const apiClient = new ApiClient();
-  apiClient.basePath = 'http://localhost:8088/api/v1';
+  apiClient.basePath = 'process.env.REACT_APP_BACKEND_URL';
 
   // Fetch ride requests
   const fetchRideRequests = () => {

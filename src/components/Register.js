@@ -14,7 +14,7 @@ const Register = () => {
   });
 
   const apiClient = new ApiClient();
-  apiClient.basePath = 'http://localhost:8088/api/v1';
+  apiClient.basePath = 'process.env.REACT_APP_BACKEND_URL';
   const authApi = new AuthApi(apiClient);
 
   const handleChange = (e) => {

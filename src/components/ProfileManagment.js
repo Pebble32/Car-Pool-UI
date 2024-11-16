@@ -36,7 +36,7 @@ const ProfileManagement = () => {
   const [passwordLoading, setPasswordLoading] = useState(false);
   
   const apiClient = new ApiClient();
-  apiClient.basePath = 'http://localhost:8088/api/v1';
+  apiClient.basePath = 'process.env.REACT_APP_BACKEND_URL';
 
   useEffect(() => {
     fetchUserInfo();
@@ -155,7 +155,7 @@ const ProfileManagement = () => {
     setSuccessMessage(null);
 
     try {
-      const uploadResponse = await fetch('http://localhost:8088/api/v1/users/profile-picture', {
+      const uploadResponse = await fetch('process.env.REACT_APP_BACKEND_URL/users/profile-picture', {
         method: 'POST',
         body: formData,
         credentials: 'include', // Include cookies if your API requires authentication via cookies
@@ -170,7 +170,7 @@ const ProfileManagement = () => {
       console.log('Profile picture uploaded successfully');
 
       // Fetch the updated profile picture
-      const updatedResponse = await fetch('http://localhost:8088/api/v1/users/profile-picture', {
+      const updatedResponse = await fetch('process.env.REACT_APP_BACKEND_URL/users/profile-picture', {
         method: 'GET',
         credentials: 'include',
       });
