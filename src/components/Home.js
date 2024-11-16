@@ -193,7 +193,7 @@ const Home = () => {
                 <Col md={6} className="text-md-end">
                   <img
                     src="https://via.placeholder.com/500"
-                    alt="Feature Image"
+                    alt="A happy woman"
                     className="img-fluid"
                   />
                 </Col>
@@ -213,7 +213,7 @@ const Home = () => {
                 <Col md={6} className="text-md-end order-md-2">
                   <img
                     src="https://via.placeholder.com/500"
-                    alt="Feature Image"
+                    alt="A Car"
                     className="img-fluid"
                   />
                 </Col>
@@ -233,7 +233,7 @@ const Home = () => {
                 <Col md={6} className="text-md-end">
                   <img
                     src="https://via.placeholder.com/500"
-                    alt="Feature Image"
+                    alt="A schoolmate"
                     className="img-fluid"
                   />
                 </Col>

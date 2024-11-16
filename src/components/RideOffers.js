@@ -28,7 +28,7 @@ const RideOffers = () => {
 
   useEffect(() => {
     fetchCurrentUser();
-  }, []);
+  }, [fetchCurrentUser]);
 
   useEffect(() => {
     fetchRideOffers(currentPage, pageSize);
