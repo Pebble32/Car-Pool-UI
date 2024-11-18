@@ -18,6 +18,23 @@ const RideOfferDetails = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const { id } = useParams();
+  const [offer, setOffer] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.offer) {
+      setOffer(location.state.offer)
+    } else {
+      fetchCurrentRideDetailsByID(id)
+    }
+  }, [id, location.state]);
+
+  useEffect(() => {
+    if (offer) {
+      fetchCurrentUser();
+    }
+  }, [offer]);
+
   const fetchCurrentUser = () => {
     // Fetch the current user's email and compare it with the creatorEmail of the offer to determine ownership
     apiClient.callApi('/auth/check', 'GET', {}, {}, {}, {}, null, [], ['text/plain'], ['text/plain'], null, null, (error, data, response) => {
