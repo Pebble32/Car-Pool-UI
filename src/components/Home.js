@@ -1,17 +1,22 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Container, Row, Col, Button } from 'react-bootstrap';
-import { Link } from 'react-router-dom'; // Import Link from react-router-dom
+import { Link } from 'react-router-dom';
+import saveMoneyImg from '../assets/savemoneyimg.png';
+import reduceEmissionImg from '../assets/reduceemission.png';
+
 
 const Home = () => {
   const animationRef = useRef(null);
   const [userCount, setUserCount] = useState(0);
   const [providerCount, setProviderCount] = useState(0);
-  const [activeRideCount, setActiveRideCount] = useState(0); // New state variable
+  const [activeRideCount, setActiveRideCount] = useState(0);
   let followMouse = true;
 
   useEffect(() => {
     // Fetch total number of users
-    fetch('https://carpool-backend-app-fhg8hbadhqejduhp.northeurope-01.azurewebsites.net/api/v1/users/all/paginated?page=0&size=1')
+    fetch(
+      'https://carpool-backend-application-fdfve8dcc2h7egcg.northeurope-01.azurewebsites.net/api/v1/users/all/paginated?page=0&size=1'
+    )
       .then((response) => response.json())
       .then((data) => {
         setUserCount(data.totalElements);
@@ -21,7 +26,9 @@ const Home = () => {
       });
 
     // Fetch total number of providers
-    fetch('https://carpool-backend-app-fhg8hbadhqejduhp.northeurope-01.azurewebsites.net/api/v1/offers/all/providers')
+    fetch(
+      'https://carpool-backend-application-fdfve8dcc2h7egcg.northeurope-01.azurewebsites.net/api/v1/offers/all/providers'
+    )
       .then((response) => response.json())
       .then((data) => {
         setProviderCount(data.length);
@@ -31,7 +38,9 @@ const Home = () => {
       });
 
     // Fetch total number of active rides
-    fetch('https://carpool-backend-app-fhg8hbadhqejduhp.northeurope-01.azurewebsites.net/api/v1/offers/filter?page=0&size=1&status=AVAILABLE')
+    fetch(
+      'https://carpool-backend-application-fdfve8dcc2h7egcg.northeurope-01.azurewebsites.net/api/v1/offers/filter?page=0&size=1&status=AVAILABLE'
+    )
       .then((response) => response.json())
       .then((data) => {
         setActiveRideCount(data.totalElements);
@@ -44,16 +53,22 @@ const Home = () => {
   useEffect(() => {
     const canvas = animationRef.current;
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight * 2;
+
+    function setCanvasSize() {
+      const canvasContainer = canvas.parentElement;
+      canvas.width = canvasContainer.offsetWidth;
+      canvas.height = canvasContainer.offsetHeight;
+    }
+
+    setCanvasSize();
 
     let particlesArray = [];
     const mouse = { x: null, y: null, radius: 150 };
 
     window.addEventListener('mousemove', (event) => {
       if (followMouse) {
-        mouse.x = event.x;
-        mouse.y = event.y;
+        mouse.x = event.pageX;
+        mouse.y = event.pageY;
       }
     });
 
@@ -69,7 +84,9 @@ const Home = () => {
         let directionX = Math.random() * 2 - 1;
         let directionY = Math.random() * 2 - 1;
         let color = '#B7C9E2';
-        particlesArray.push(new Particle(event.x, event.y, directionX, directionY, size, color));
+        particlesArray.push(
+          new Particle(event.pageX, event.pageY, directionX, directionY, size, color)
+        );
       }
     });
 
@@ -103,7 +120,12 @@ const Home = () => {
         let dx = mouse.x - this.x;
         let dy = mouse.y - this.y;
         let distance = Math.sqrt(dx * dx + dy * dy);
-        if (followMouse && mouse.x !== null && mouse.y !== null && distance < mouse.radius + this.size) {
+        if (
+          followMouse &&
+          mouse.x !== null &&
+          mouse.y !== null &&
+          distance < mouse.radius + this.size
+        ) {
           this.x += dx * 0.05;
           this.y += dy * 0.05;
         } else {
@@ -140,8 +162,7 @@ const Home = () => {
     animate();
 
     window.addEventListener('resize', () => {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight * 2;
+      setCanvasSize();
       init();
     });
   }, []);
@@ -157,7 +178,7 @@ const Home = () => {
           padding: '7rem 0',
           backgroundColor: '#e5e3dc',
           color: '#333',
-          height: '200vh',
+          height: 'auto',
         }}
       >
         <canvas
@@ -187,65 +208,70 @@ const Home = () => {
           className="features-section py-5"
           style={{ backgroundColor: 'transparent', color: '#333', position: 'relative' }}
         >
+
           <Container className="narrow-container" style={{ maxWidth: '50%' }}>
             <div className="timeline">
-              <Row className="align-items-center mb-5">
-                <Col md={6} className="text-md-end">
-                  <img
-                    src="https://via.placeholder.com/500"
-                    alt="Feature Image"
-                    className="img-fluid"
-                  />
-                </Col>
-                <Col md={6} className="d-flex align-items-center">
-                  <div>
-                    <h3 className="text-dark" style={{ fontWeight: 'bold' }}>
-                      Save Money
-                    </h3>
-                    <p>
-                      Cut down on travel costs by sharing rides with fellow students and staff.
-                    </p>
-                  </div>
-                </Col>
-              </Row>
+
+
+            <Row className="align-items-center mb-5">
+              <Col md={6} className="text-md-end">
+                <img
+                  src={saveMoneyImg}
+                  alt="Save Money"
+                  className="img-fluid"
+                  style={{
+                    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                    borderRadius: '10px', 
+                    transition: 'transform 0.2s ease-in-out', 
+                    cursor: 'pointer', 
+                  }}
+                  onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.03)')} 
+                  onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')} 
+                />
+              </Col>
+              <Col md={6} className="d-flex align-items-center">
+                <div>
+                  <h3 className="text-dark" style={{ fontWeight: 'bold' }}>
+                    Save Money
+                  </h3>
+                  <p>
+                    Cut down on travel costs by sharing rides with fellow students and staff.
+                  </p>
+                </div>
+              </Col>
+            </Row>
+
               <div className="timeline-dot"></div>
+
+              
               <Row className="align-items-center mb-5">
-                <Col md={6} className="text-md-end order-md-2">
-                  <img
-                    src="https://via.placeholder.com/500"
-                    alt="Feature Image"
-                    className="img-fluid"
-                  />
-                </Col>
-                <Col md={6} className="order-md-1 d-flex align-items-center">
-                  <div>
-                    <h3 className="text-dark" style={{ fontWeight: 'bold' }}>
-                      Reduce Emissions
-                    </h3>
-                    <p>
-                      Help reduce traffic congestion and pollution in the greater Reykjavík area.
-                    </p>
-                  </div>
-                </Col>
-              </Row>
+            <Col md={6} className="order-md-1 d-flex align-items-center">
+              <div>
+                <h3 className="text-dark" style={{ fontWeight: 'bold' }}>
+                  Reduce Emissions
+                </h3>
+                <p>
+                  Help reduce traffic congestion and pollution in the greater Reykjavík area.
+                </p>
+              </div>
+            </Col>
+            <Col md={6} className="text-md-start order-md-2">
+              <img
+                src={reduceEmissionImg}
+                alt="Reduce Emissions"
+                className="img-fluid"
+                style={{
+                  boxShadow: '0 4px 8px rgba(0, 0, 0, 0.2)', 
+                  borderRadius: '10px', 
+                  transition: 'transform 0.2s ease-in-out', 
+                  cursor: 'pointer', 
+                }}
+                onMouseOver={(e) => (e.currentTarget.style.transform = 'scale(1.03)')} 
+                onMouseOut={(e) => (e.currentTarget.style.transform = 'scale(1)')} 
+              />
+            </Col>
+          </Row>
               <div className="timeline-dot"></div>
-              <Row className="align-items-center mb-5">
-                <Col md={6} className="text-md-end">
-                  <img
-                    src="https://via.placeholder.com/500"
-                    alt="Feature Image"
-                    className="img-fluid"
-                  />
-                </Col>
-                <Col md={6} className="d-flex align-items-center">
-                  <div>
-                    <h3 className="text-dark" style={{ fontWeight: 'bold' }}>
-                      Build Community
-                    </h3>
-                    <p>Make meaningful connections on your way to campus.</p>
-                  </div>
-                </Col>
-              </Row>
             </div>
           </Container>
         </div>
