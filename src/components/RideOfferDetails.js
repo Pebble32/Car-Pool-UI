@@ -1,6 +1,6 @@
 // src/components/RideOfferDetails.js
-import React, { useState } from 'react';
-import { useLocation, useNavigate } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import {useLocation, useNavigate, useParams} from 'react-router-dom';
 import ApiClient from '../generated-api/src/ApiClient';
 import RideOfferApi from '../generated-api/src/api/RideOfferApi';
 import { Button, Table, Spinner, Alert } from 'react-bootstrap';
@@ -8,7 +8,7 @@ import { Button, Table, Spinner, Alert } from 'react-bootstrap';
 const RideOfferDetails = () => {
   const location = useLocation();
   const navigate = useNavigate();
-  const { offer } = location.state;
+
   const apiClient = new ApiClient();
   apiClient.basePath = 'http://localhost:8088/api/v1';
   const rideOfferApi = new RideOfferApi(apiClient);
@@ -17,6 +17,23 @@ const RideOfferDetails = () => {
   const [rideRequests, setRideRequests] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+
+  const { id } = useParams();
+  const [offer, setOffer] = useState(null);
+
+  useEffect(() => {
+    if (location.state?.offer) {
+      setOffer(location.state.offer)
+    } else {
+      fetchCurrentRideDetailsByID(id)
+    }
+  }, [id, location.state]);
+
+  useEffect(() => {
+    if (offer) {
+      fetchCurrentUser();
+    }
+  }, [offer]);
 
   const fetchCurrentUser = () => {
     // Fetch the current user's email and compare it with the creatorEmail of the offer to determine ownership
@@ -38,10 +55,6 @@ const RideOfferDetails = () => {
       setLoading(false);
     });
   };
-
-  useState(() => {
-    fetchCurrentUser();
-  });
 
   const fetchRideRequests = () => {
     // Fetch ride requests for this ride offer if the user is the owner
@@ -128,29 +141,33 @@ const RideOfferDetails = () => {
 
   const fetchCurrentRideDetails = () => {
     // Fetch the current ride offer details again to update seat count, etc.
+    fetchCurrentRideDetailsByID(offer.id);
+  };
+
+  const fetchCurrentRideDetailsByID = (id) => {
     rideOfferApi.apiClient.callApi(
-      `/offers/details`,
-      'GET',
-      {},
-      { ID: offer.id },
-      {},
-      {},
-      null,
-      [],
-      ['application/json'],
-      ['application/json'],
-      null,
-      null,
-      (error, data, response) => {
-        if (error) {
-          console.error('Error fetching ride offer details:', error);
-          setError('Failed to fetch updated ride offer details.');
-        } else {
-          const updatedOffer = JSON.parse(response.text);
-          console.log('Ride offer details updated successfully:', updatedOffer);
-          Object.assign(offer, updatedOffer);
+        `/offers/details`,
+        'GET',
+        {},
+        { ID: id },
+        {},
+        {},
+        null,
+        [],
+        ['application/json'],
+        ['application/json'],
+        null,
+        null,
+        (error, data, response) => {
+          if (error) {
+            console.error('Error fetching ride offer details:', error);
+            setError('Failed to fetch updated ride offer details.');
+          } else {
+            const updatedOffer = JSON.parse(response.text);
+            console.log('Ride offer details updated successfully:', updatedOffer);
+            setOffer(updatedOffer);
+          }
         }
-      }
     );
   };
 
